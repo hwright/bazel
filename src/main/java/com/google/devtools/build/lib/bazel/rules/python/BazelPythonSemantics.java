@@ -135,6 +135,7 @@ public class BazelPythonSemantics implements PythonSemantics {
     String pythonBinary = getPythonBinary(ruleContext, config);
 
     if (!ruleContext.getFragment(PythonConfiguration.class).buildPythonZip()) {
+      // TODO: Inject third_party/py/coverage as a dependency for the coverage case
       ruleContext.registerAction(
           new TemplateExpansionAction(
               ruleContext.getActionOwner(),
@@ -146,6 +147,8 @@ public class BazelPythonSemantics implements PythonSemantics {
                   Substitution.of("%imports%", Joiner.on(":").join(imports)),
                   Substitution.of("%workspace_name%", ruleContext.getWorkspaceName()),
                   Substitution.of("%is_zipfile%", "False"),
+                  Substitution.of("%is_coverage_enabled%",
+                      ruleContext.getConfiguration().isCodeCoverageEnabled() ? "True" : "False"),
                   Substitution.of("%import_all%",
                       config.getImportAllRepositories() ? "True" : "False")),
               true));
@@ -164,6 +167,8 @@ public class BazelPythonSemantics implements PythonSemantics {
                   Substitution.of("%imports%", Joiner.on(":").join(imports)),
                   Substitution.of("%workspace_name%", ruleContext.getWorkspaceName()),
                   Substitution.of("%is_zipfile%", "True"),
+                  Substitution.of("%is_coverage_enabled%",
+                      ruleContext.getConfiguration().isCodeCoverageEnabled() ? "True" : "False"),
                   Substitution.of("%import_all%",
                       config.getImportAllRepositories() ? "True" : "False")),
               true));

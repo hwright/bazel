@@ -8,6 +8,8 @@ import sys
 import subprocess
 import zipfile
 
+COVERAGE=%is_coverage_enabled%
+
 # Return True if running on Windows
 def IsWindows():
   return os.name == 'nt'
@@ -175,6 +177,15 @@ def Main():
   if python_program is None:
     raise AssertionError('Could not find python binary: ' + PYTHON_BINARY)
   args = [python_program, main_filename] + args
+
+  if COVERAGE:
+      coverage_output = os.getenv('COVERAGE_OUTPUT_FILE')
+      if coverage_output:
+        new_env['COVERAGE_FILE'] = coverage_output
+      else:
+        new_env['COVERAGE_FILE'] = '.coverage'
+      coverage_args = ['-m', 'coverage', 'run']
+      args = args[:1] + coverage_args + args[1:]
 
   os.environ.update(new_env)
 
