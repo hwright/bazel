@@ -1199,6 +1199,7 @@ SKYLARK_REPOSITORY_CLASSES = [
     "com.google.devtools.build.lib.bazel.repository.skylark.SkylarkExecutionResult",
     "com.google.devtools.build.lib.bazel.repository.skylark.SkylarkOS",
     "com.google.devtools.build.lib.bazel.repository.skylark.SkylarkPath",
+    "com.google.devtools.build.lib.bazel.repository.skylark.SkylarkPythonConfig",
     "com.google.devtools.build.lib.bazel.repository.skylark.SkylarkRepositoryContext",
     "com.google.devtools.build.lib.bazel.repository.skylark.SkylarkRepositoryModule",
 ]

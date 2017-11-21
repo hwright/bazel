@@ -82,6 +82,7 @@ public class SkylarkRepositoryContext {
   private final Path outputDirectory;
   private final Info attrObject;
   private final SkylarkOS osObject;
+  private final SkylarkPythonConfig pyConfigObject;
   private final Environment env;
   private final HttpDownloader httpDownloader;
   private final Map<String, String> markerData;
@@ -97,6 +98,7 @@ public class SkylarkRepositoryContext {
     this.outputDirectory = outputDirectory;
     this.env = environment;
     this.osObject = new SkylarkOS(env);
+    this.pyConfigObject = new SkylarkPythonConfig();
     this.httpDownloader = httpDownloader;
     this.markerData = markerData;
     WorkspaceAttributeMapper attrs = WorkspaceAttributeMapper.of(rule);
@@ -467,6 +469,15 @@ public class SkylarkRepositoryContext {
       }
     }
     return null;
+  }
+
+  @SkylarkCallable(
+      name = "python_config",
+      structField = true,
+      doc = "A struct to access python configuration information"
+  )
+  public SkylarkPythonConfig pyContext() {
+      return pyConfigObject;
   }
 
   @SkylarkCallable(
