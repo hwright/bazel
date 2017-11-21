@@ -28,6 +28,7 @@ filegroup(
         "//third_party/protobuf:srcs",
         "//third_party/py/abseil:srcs",
         "//third_party/py/concurrent:srcs",
+        "//third_party/py/coverage:srcs",
         "//third_party/py/gflags:srcs",
         "//third_party/py/mock:srcs",
         "//third_party/py/six:srcs",

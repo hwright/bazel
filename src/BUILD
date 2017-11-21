@@ -126,6 +126,7 @@ py_binary(
         "//third_party/java/jdk/langtools:test-srcs",
         "//third_party/java/proguard:embedded_tools",
         "//third_party/py/concurrent:srcs",
+        "//third_party/py/coverage:srcs",
         "//third_party/py/gflags:srcs",
         "//third_party/py/six:srcs",
         "//src/conditions:embedded_tools",
