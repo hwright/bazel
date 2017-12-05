@@ -96,6 +96,11 @@ public class BazelPythonSemantics implements PythonSemantics {
   @Override
   public List<PathFragment> getImports(RuleContext ruleContext) {
     List<PathFragment> result = new ArrayList<>();
+    if (ruleContext.getConfiguration().isCodeCoverageEnabled()) {
+      // We've included the coverage module in the runfiles, but we also need to include it in the
+      // imports.
+      result.add(PathFragment.create("bazel_tools/third_party/py/coverage"));
+    }
     PathFragment packageFragment = ruleContext.getLabel().getPackageIdentifier().getRunfilesPath();
     // Python scripts start with x.runfiles/ as the module space, so everything must be manually
     // adjusted to be relative to the workspace name.
@@ -135,7 +140,6 @@ public class BazelPythonSemantics implements PythonSemantics {
     String pythonBinary = getPythonBinary(ruleContext, config);
 
     if (!ruleContext.getFragment(PythonConfiguration.class).buildPythonZip()) {
-      // TODO: Inject third_party/py/coverage as a dependency for the coverage case
       ruleContext.registerAction(
           new TemplateExpansionAction(
               ruleContext.getActionOwner(),

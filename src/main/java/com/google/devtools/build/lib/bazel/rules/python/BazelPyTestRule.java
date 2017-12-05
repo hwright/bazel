@@ -48,6 +48,7 @@ public final class BazelPyTestRule implements RuleDefinition {
             .cfg(HostTransition.INSTANCE)
             .exec()
             .value(env.getToolsLabel("//tools/zip:zipper")))
+        .add(attr("$pycov", LABEL).value(env.getToolsLabel("//third_party/py/coverage")))
         .override(
             attr("testonly", BOOLEAN)
                 .value(true)

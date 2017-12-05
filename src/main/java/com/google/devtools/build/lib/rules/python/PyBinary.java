@@ -145,6 +145,9 @@ public abstract class PyBinary implements RuleConfiguredTargetFactory {
     } else {
       builder.addTransitiveArtifacts(common.getFilesToBuild());
     }
+    if (ruleContext.getConfiguration().isCodeCoverageEnabled()) {
+      builder.addTarget(ruleContext.getPrerequisite("$pycov", Mode.TARGET), RunfilesProvider.DEFAULT_RUNFILES);
+    }
     semantics.collectDefaultRunfiles(ruleContext, builder);
     builder.add(ruleContext, PythonRunfilesProvider.TO_RUNFILES);
 
