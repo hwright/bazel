@@ -18,3 +18,5 @@
 # Ignore jekyll build output.
 /production
 /.sass-cache
+# Ignore OS-generate files.
+.DS_Store
