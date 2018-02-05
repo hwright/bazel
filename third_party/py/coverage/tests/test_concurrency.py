@@ -506,7 +506,6 @@ def test_thread_safe_save_data(tmpdir):
     should_run = [True]
     imported = []
 
-    #sys.path.insert(0, modules_dir.strpath)
     old_dir = os.getcwd()
     os.chdir(modules_dir.strpath)
     try:
@@ -526,11 +525,11 @@ def test_thread_safe_save_data(tmpdir):
         # results right after stopping coverage collection with the threads
         #  still running.
         duration = 0.01
-        for i in range(3):
+        for _ in range(3):
             cov = coverage.coverage()
             cov.start()
 
-            threads = [threading.Thread(target=random_load) for i in range(10)]
+            threads = [threading.Thread(target=random_load) for _ in range(10)]
             should_run[0] = True
             for t in threads:
                 t.start()
@@ -539,7 +538,7 @@ def test_thread_safe_save_data(tmpdir):
 
             cov.stop()
 
-            # The following call use to crash with running background threads.
+            # The following call used to crash with running background threads.
             cov.get_data()
 
             # Stop the threads

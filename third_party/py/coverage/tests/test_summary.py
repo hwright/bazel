@@ -122,6 +122,41 @@ class SummaryTest(UsingModulesMixin, CoverageTest):
         self.assertIn("mycode.py ", report)
         self.assertEqual(self.last_line_squeezed(report), "mycode.py 4 0 100%")
 
+    def test_run_source_vs_report_include(self):
+        # https://bitbucket.org/ned/coveragepy/issues/621/include-ignored-warning-when-using
+        self.make_file(".coveragerc", """\
+            [run]
+            source = .
+
+            [report]
+            include = mod/*,tests/*
+            """)
+        # It should be OK to use that configuration.
+        cov = coverage.Coverage()
+        with self.assert_warnings(cov, []):
+            cov.start()
+            cov.stop()                                                  # pragma: nested
+
+    def test_run_omit_vs_report_omit(self):
+        # https://bitbucket.org/ned/coveragepy/issues/622/report-omit-overwrites-run-omit
+        # report:omit shouldn't clobber run:omit.
+        self.make_mycode()
+        self.make_file(".coveragerc", """\
+            [run]
+            omit = */covmodzip1.py
+
+            [report]
+            omit = */covmod1.py
+            """)
+        self.run_command("coverage run mycode.py")
+
+        # Read the data written, to see that the right files have been omitted from running.
+        covdata = CoverageData()
+        covdata.read_file(".coverage")
+        files = [os.path.basename(p) for p in covdata.measured_files()]
+        self.assertIn("covmod1.py", files)
+        self.assertNotIn("covmodzip1.py", files)
+
     def test_report_branches(self):
         self.make_file("mybranch.py", """\
             def branch(x):
@@ -384,6 +419,49 @@ class SummaryTest(UsingModulesMixin, CoverageTest):
         self.assertEqual(self.line_count(report), 3, report)
         squeezed = self.squeezed_lines(report)
         self.assertEqual(squeezed[2], "No data to report.")
+
+    def test_report_precision(self):
+        self.make_file(".coveragerc", """\
+            [report]
+            precision = 3
+            """)
+        self.make_file("main.py", """
+            import not_covered, covered
+
+            def normal(z):
+                if z:
+                    print("z")
+            normal(True)
+            normal(False)
+        """)
+        self.make_file("not_covered.py", """
+            def not_covered(n):
+                if n:
+                    print("n")
+            not_covered(True)
+        """)
+        self.make_file("covered.py", """
+            def foo():
+                pass
+            foo()
+        """)
+        out = self.run_command("coverage run --branch main.py")
+        self.assertEqual(out, "n\nz\n")
+        report = self.report_from_command("coverage report")
+
+        # Name             Stmts   Miss Branch BrPart      Cover
+        # ------------------------------------------------------
+        # covered.py           3      0      0      0   100.000%
+        # main.py              6      0      2      0   100.000%
+        # not_covered.py       4      0      2      1    83.333%
+        # ------------------------------------------------------
+        # TOTAL               13      0      4      1    94.118%
+
+        self.assertEqual(self.line_count(report), 7, report)
+        squeezed = self.squeezed_lines(report)
+        self.assertEqual(squeezed[2], "covered.py 3 0 0 0 100.000%")
+        self.assertEqual(squeezed[4], "not_covered.py 4 0 2 1 83.333%")
+        self.assertEqual(squeezed[6], "TOTAL 13 0 4 1 94.118%")
 
     def test_dotpy_not_python(self):
         # We run a .py file, and when reporting, we can't parse it as Python.

@@ -7,6 +7,7 @@ useful bug reports, have been made by:
 Adi Roiban
 Alex Gaynor
 Alex Groce
+Alex Sandro
 Alexander Todorov
 Andrew Hoos
 Anthony Sottile
@@ -33,6 +34,7 @@ Cosimo Lupo
 Dan Riti
 Dan Wandschneider
 Danek Duvall
+Daniel Hahler
 Danny Allen
 David Christian
 David MacIver
@@ -57,11 +59,13 @@ JT Olds
 Jessamyn Smith
 Joe Doherty
 Jon Chappell
+Jon Dufresne
 Joseph Tate
 Josh Williams
 Julian Berman
 Krystian Kichewko
 Kyle Altendorf
+Lars Hupfeldt Nielsen
 Leonardo Pistone
 Lex Berezhny
 Loïc Dachary

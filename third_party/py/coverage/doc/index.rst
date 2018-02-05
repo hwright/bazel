@@ -50,6 +50,7 @@ Coverage.py
 .. :history: 20160726T161300, updated for 4.2
 .. :history: 20161226T160400, updated for 4.3
 .. :history: 20170116T180100, updated for 4.3.2
+.. :history: 20180203T130300, updated for 4.5
 
 
 Coverage.py is a tool for measuring code coverage of Python programs. It
@@ -62,12 +63,12 @@ not.
 
 .. ifconfig:: not prerelease
 
-    The latest version is coverage.py 4.4.2, released November 5th 2017.  It
+    The latest version is coverage.py 4.5, released February 3rd 2018.  It
     is supported on:
 
     * Python versions 2.6, 2.7, 3.3, 3.4, 3.5, 3.6, and 3.7.
 
-    * PyPy2 5.9 and PyPy3 5.9.
+    * PyPy2 5.10 and PyPy3 5.10.
 
     * Jython 2.7.1, though only for running code, not reporting.
 
@@ -104,6 +105,12 @@ Getting started is easy:
 #.  Use ``coverage run`` to run your program and gather data:
 
     .. code-block:: console
+
+        # if you usually do:
+        #
+        #   $ python my_program.py arg1 arg2
+        #
+        # then instead do:
 
         $ coverage run my_program.py arg1 arg2
         blah blah ..your program's output.. blah blah
@@ -159,7 +166,7 @@ parts that you know aren't interesting.  See :ref:`source` and :ref:`excluding`
 for details.
 
 .. _pytest: http://doc.pytest.org
-.. _pytest-cov: http://pytest-cov.readthedocs.io
+.. _pytest-cov: https://pytest-cov.readthedocs.io/
 
 
 .. _contact:
